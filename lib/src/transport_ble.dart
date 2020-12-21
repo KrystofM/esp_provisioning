@@ -19,8 +19,11 @@ class TransportBLE implements ProvTransport {
     'custom-data': 'ff54',
   };
 
-  TransportBLE(this.peripheral,
-      {this.serviceUUID = PROV_BLE_SERVICE, this.lockupTable = PROV_BLE_EP}) {
+  TransportBLE(
+    this.peripheral, {
+    this.serviceUUID = PROV_BLE_SERVICE,
+    this.lockupTable = PROV_BLE_EP,
+  }) {
     nuLookup = new Map<String, String>();
 
     for (var name in lockupTable.keys) {
@@ -36,7 +39,7 @@ class TransportBLE implements ProvTransport {
     if (isConnected) {
       return true;
     }
-    await peripheral.connect(requestMtu: 512);
+    await peripheral.connect(requestMtu: 512, refreshGatt: true);
     await peripheral.discoverAllServicesAndCharacteristics(
         transactionId: 'discoverAllServicesAndCharacteristics');
     return peripheral.isConnected();
