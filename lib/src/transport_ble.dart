@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:typed_data';
+
 import 'package:flutter_ble_lib/flutter_ble_lib.dart';
 
 import 'transport.dart';
@@ -39,7 +40,12 @@ class TransportBLE implements ProvTransport {
     if (isConnected) {
       return true;
     }
-    await peripheral.connect(requestMtu: 512, refreshGatt: true);
+    try {
+      await peripheral.connect(requestMtu: 512, refreshGatt: true);
+    } on Exception {
+      await peripheral.disconnectOrCancelConnection();
+      connect();
+    }
     await peripheral.discoverAllServicesAndCharacteristics(
         transactionId: 'discoverAllServicesAndCharacteristics');
     return peripheral.isConnected();
