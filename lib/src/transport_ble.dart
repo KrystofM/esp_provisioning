@@ -41,7 +41,7 @@ class TransportBLE implements ProvTransport {
       return true;
     }
     try {
-      await peripheral.connect(requestMtu: 512, isAutoConnect: true);
+      await peripheral.connect(requestMtu: 512);
     } on Exception {
       await peripheral.disconnectOrCancelConnection();
       connect();
