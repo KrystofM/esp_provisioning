@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:esp_provisioning/src/connection_models.dart';
@@ -25,8 +24,6 @@ class EspProv {
       if (request == null) {
         return;
       }
-
-      sleep(const Duration(seconds: 1));
 
       var response =
           await transport.sendReceive('prov-session', request.writeToBuffer());
