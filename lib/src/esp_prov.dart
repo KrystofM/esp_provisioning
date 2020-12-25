@@ -24,6 +24,7 @@ class EspProv {
       if (request == null) {
         return;
       }
+
       var response =
           await transport.sendReceive('prov-session', request.writeToBuffer());
       if (response.isEmpty) {

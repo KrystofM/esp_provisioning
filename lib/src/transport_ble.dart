@@ -40,12 +40,7 @@ class TransportBLE implements ProvTransport {
     if (isConnected) {
       return true;
     }
-    try {
-      await peripheral.connect(requestMtu: 512);
-    } on BleError catch (e) {
-      await peripheral.disconnectOrCancelConnection();
-      connect();
-    }
+    await peripheral.connect(requestMtu: 512);
     await peripheral.discoverAllServicesAndCharacteristics(
         transactionId: 'discoverAllServicesAndCharacteristics');
     return peripheral.isConnected();
@@ -53,9 +48,11 @@ class TransportBLE implements ProvTransport {
 
   Future<Uint8List> sendReceive(String epName, Uint8List data) async {
     if (data != null && data.length > 0) {
+      print('writing characteristics');
       await peripheral.writeCharacteristic(
           serviceUUID, nuLookup[epName], data, true);
     }
+    print('reading characteristics');
     CharacteristicWithValue receivedData = await peripheral.readCharacteristic(
         serviceUUID, nuLookup[epName],
         transactionId: 'readCharacteristic');
